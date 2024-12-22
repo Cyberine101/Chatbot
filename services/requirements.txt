@@ -1,0 +1,4 @@
+Flask==2.2.2
+Flask-Compress==1.13
+Flask-Cors==5.0.0
+Flask-SocketIO==5.2.0
