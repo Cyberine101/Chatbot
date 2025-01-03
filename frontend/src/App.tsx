@@ -1,10 +1,26 @@
+import { useState, useEffect } from 'react';
 import './App.css';
+import MessageList from './MessageList';
+import MessageForm from './MessageForm';
 
 function App() {
+  const [messages, setMessages] = useState([]);
+
+  useEffect(() => {
+    fetchMessages();
+  }, []);
+
+  async function fetchMessages() {
+    const response = await fetch("http://127.0.0.1:5000/retrieve");
+    const data = await response.json();
+    console.log(data.store);
+    setMessages(data.store);
+  }
+  console.log(messages)
   return (
     <div className="App">
-      <h1 style={{fontSize: "100px", fontStyle: "bold"}}>Welcome to Chatbot XD</h1>
-      <input type="text" placeholder="Hello" style={{border: "1px solid black", width: "max-content"}}></input>
+      <MessageList messages={messages} />
+      <MessageForm />
     </div>
   );
 }
