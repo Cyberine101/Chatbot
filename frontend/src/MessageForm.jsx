@@ -36,7 +36,8 @@ export default function MessageForm({ }) {
                 <input type="text"
                         id="message"
                         value={message}
-                        onChange={(e) => setMessage(e.target.value)}></input>
+                        onChange={(e) => setMessage(e.target.value)}>
+                </input>
             </div>
             <button onClick={createMessage}>Submit</button>
         </div>

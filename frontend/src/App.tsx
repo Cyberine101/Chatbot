@@ -1,26 +1,45 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import './App.css';
 import MessageList from './MessageList';
 import MessageForm from './MessageForm';
+import Login from './Login';
 
 function App() {
   const [messages, setMessages] = useState([]);
+  const [loginVisible, setLoginVisible] = useState<boolean>(true);
 
   useEffect(() => {
-    fetchMessages();
+    deleteMessages();
+    retrieveMessages();
   }, []);
 
-  async function fetchMessages() {
+  async function retrieveMessages() {
     const response = await fetch("http://127.0.0.1:5000/retrieve");
     const data = await response.json();
-    console.log(data.store);
     setMessages(data.store);
   }
-  console.log(messages)
+
+  async function deleteMessages() {
+    const options = {
+      method: "DELETE",
+    }
+
+    const response = await fetch("http://127.0.0.1:5000/deleteAll", options);
+    const data = await response.json();
+    console.log(data);
+  }
+  
   return (
     <div className="App">
-      <MessageList messages={messages} />
-      <MessageForm />
+    {!loginVisible &&
+      <div >
+        <MessageList messages={messages} />
+        <MessageForm />
+      </div>
+    }
+    {loginVisible &&
+     <Login setLoginVisible={setLoginVisible}/>
+    }
     </div>
   );
 }

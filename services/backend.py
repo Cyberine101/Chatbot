@@ -12,6 +12,7 @@ def store_messages():
         }
     
     new_message = Message(message=message)
+    
     try:
         db.session.add(new_message)
         db.session.commit()
@@ -20,9 +21,25 @@ def store_messages():
 
     return jsonify({"message": "Message Stored!"}), 201
 
+@app.route('/deleteAll', methods=["DELETE"])
+def delete_all_messages():
+    messages = Message.query.all()
+
+    if not messages:
+        return jsonify({"message": "Bad Request!"}), 404
+
+    for message in messages:
+        db.session.delete(message)
+
+    db.session.commit()
+
+    return jsonify({"message": "All messages were deleted!"}), 200
+    
+
 @app.route('/retrieve', methods=["GET"])
 def retrieve_messages():
     messages = Message.query.all()
+    print("Messages: ", messages)
     json_messages = list(map(lambda x: x.to_json(), messages))
     return jsonify({"store": json_messages})
 
